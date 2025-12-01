@@ -1,0 +1,23 @@
+name: Daily Streak Commit
+
+on:
+  schedule:
+    - cron: '30 19 * * *'    # هر روز ساعت ۲۳:۰۰ ایران
+  workflow_dispatch:
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Daily streak commit
+        run: |
+          echo "$(date '+%Y-%m-%d %H:%M:%S') – استریک زنده است 🔥" >> streak.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions@github.com"
+          git add streak.txt
+          git commit -m "daily streak $(date '+%Y-%m-%d') 🔥"  echo "Nothing to commit"
+          git push  echo "Push failed (maybe no changes)"
